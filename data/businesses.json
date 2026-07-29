@@ -1,0 +1,5 @@
+[
+{"name":"Prairie Sky Lodge","category":"Pheasant Guides","city":"Pierre","state":"SD","phoneRaw":"6055555555","website":"#","email":"hunts@example.com","premier":true,"description":"Luxury pheasant hunts with lodging."},
+{"name":"Dakota Prairie Outfitters","category":"Waterfowl Guides","city":"Aberdeen","state":"SD","phoneRaw":"6055551234","website":"#","email":"info@example.com","premier":false,"description":"Guided waterfowl adventures."},
+{"name":"Ringneck Ridge","category":"Pheasant Guides","city":"Mitchell","state":"SD","phoneRaw":"6055554567","website":"#","email":"book@example.com","premier":false,"description":"Family-owned pheasant outfitter."}
+]
