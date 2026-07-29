@@ -1,10 +1,133 @@
-fetch('data/businesses.json').then(r=>r.json()).then(data=>{
-const cats=['All',...new Set(data.map(x=>x.category))],c=document.getElementById('cats'),r=document.getElementById('results'),f=document.getElementById('featured');
-let cur='All';
-cats.forEach(n=>{let b=document.createElement('button');b.className='cat'+(n==='All'?' active':'');b.textContent=n;b.onclick=()=>{document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');cur=n;draw()};c.appendChild(b);});
-document.getElementById('search').oninput=draw;
-function card(x,prem=false){return `<div class="col-lg-${prem?12:4}"><div class="cardx"><div class="d-flex gap-3"><div class="logo">${x.name[0]}</div><div><h3>${x.name}</h3>${x.premier?'<span class="badge badge-premier">Premier Partner</span>':''}<div>${x.city}, ${x.state}</div><p>${x.description}</p><div class='d-flex gap-2 flex-wrap'><a class='btn btn-dark btn-sm' href='${x.website}'>Website</a><a class='btn btnoutline btn-outline-dark btn-sm' href='tel:${x.phoneRaw}'>Call</a><a class='btn btn-outline-secondary btn-sm' href='mailto:${x.email}'>Email</a></div></div></div></div></div>`}
-function draw(){let q=document.getElementById('search').value.toLowerCase();f.innerHTML='';r.innerHTML='';
-data.filter(x=>(cur==='All'||x.category===cur)&&(x.name.toLowerCase().includes(q)||x.city.toLowerCase().includes(q))).forEach(x=>{(x.premier?f:r).insertAdjacentHTML('beforeend',card(x,x.premier));});}
-draw();
+from pathlib import Path
+
+js = r"""fetch('data/businesses.json')
+.then(r=>r.json())
+.then(data=>{
+
+const cats=["All",...new Set(data.map(x=>x.category))];
+const catsWrap=document.getElementById("cats");
+const featured=document.getElementById("featured");
+const results=document.getElementById("results");
+const search=document.getElementById("search");
+const count=document.getElementById("resultCount");
+
+let current="All";
+
+cats.forEach(name=>{
+    const btn=document.createElement("button");
+    btn.className="cat"+(name==="All"?" active":"");
+    btn.textContent=name;
+    btn.onclick=()=>{
+        document.querySelectorAll(".cat").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        current=name;
+        render();
+    };
+    catsWrap.appendChild(btn);
 });
+
+search.addEventListener("input",render);
+
+function highlight(text,q){
+    if(!q)return text;
+    const reg=new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");
+    return text.replace(reg,"<mark>$1</mark>");
+}
+
+function card(item,premier=false){
+
+    const q=search.value.trim();
+
+    return `
+<div class="col-lg-${premier?12:4} col-md-6 fade-item">
+<div class="cardx">
+
+<div class="d-flex gap-3">
+
+<div class="logo">
+${item.logo?`<img src="${item.logo}" class="img-fluid rounded-circle">`:item.name.charAt(0)}
+</div>
+
+<div class="flex-grow-1">
+
+<h3>${highlight(item.name,q)}</h3>
+
+${item.premier?'<span class="badge-premier">Premier Partner</span>':''}
+
+<div class="text-muted mb-2">
+${highlight(item.city,q)}, ${item.state}
+</div>
+
+<p>${item.description||""}</p>
+
+<div class="d-flex flex-wrap gap-2">
+
+<a class="btn btn-dark btn-sm" href="${item.website}" target="_blank">
+Website
+</a>
+
+<a class="btn btn-outline-dark btn-sm" href="tel:${item.phoneRaw}">
+Call
+</a>
+
+<a class="btn btn-outline-secondary btn-sm" href="mailto:${item.email}">
+Email
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>`;
+}
+
+function render(){
+
+const q=search.value.trim().toLowerCase();
+
+featured.innerHTML="";
+results.innerHTML="";
+
+let matches=data.filter(item=>{
+
+const inCategory=current==="All"||item.category===current;
+
+const searchable=[
+item.name,
+item.city,
+item.category,
+item.description||""
+].join(" ").toLowerCase();
+
+return inCategory && searchable.includes(q);
+
+});
+
+count.textContent=`${matches.length} Businesses`;
+
+matches.sort((a,b)=>{
+if(a.premier&&!b.premier) return -1;
+if(!a.premier&&b.premier) return 1;
+return a.name.localeCompare(b.name);
+});
+
+matches.forEach(item=>{
+(item.premier?featured:results)
+.insertAdjacentHTML("beforeend",card(item,item.premier));
+});
+
+}
+
+render();
+
+});
+"""
+
+outdir=Path("/mnt/data/out")
+outdir.mkdir(exist_ok=True)
+path=outdir/"app.js"
+path.write_text(js,encoding="utf-8")
+print(path)
