@@ -1,6 +1,114 @@
-body{background:#f4f1e8}.hero{background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),linear-gradient(#88abc2,#d5c6a1);color:#fff}
-.cardx{background:#fff;border-radius:18px;border:1px solid #ddd;padding:20px;height:100%;transition:.25s}
-.cardx:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08);border-color:#9a783d}
-.cat{padding:.5rem 1rem;border-radius:999px;background:#fff;border:1px solid #ccc;cursor:pointer}
-.cat.active,.badge-premier{background:#9a783d;color:#fff}
-.logo{width:70px;height:70px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-weight:bold}
+/* The Outdoorsman Directory */
+:root{
+--tan:#9a783d;
+--bg:#f4f1e8;
+--dark:#1f1f1f;
+--muted:#6c757d;
+--radius:18px;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:var(--bg);
+color:var(--dark);
+line-height:1.6;
+}
+.hero{
+background:
+linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+url("../assets/images/hero-directory.jpg") center/cover no-repeat;
+color:#fff;
+position:relative;
+}
+.hero-overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(to bottom,rgba(0,0,0,.15),rgba(0,0,0,.45));
+}
+.min-vh-50{min-height:60vh}
+.eyebrow{
+display:inline-block;
+letter-spacing:.18em;
+font-size:.78rem;
+font-weight:700;
+text-transform:uppercase;
+opacity:.9;
+}
+.search-wrap input{
+border:none;
+border-radius:999px;
+padding:1rem 1.5rem;
+box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+.hero-card{
+background:#fff;
+color:#222;
+border-radius:var(--radius);
+padding:2rem;
+box-shadow:0 20px 50px rgba(0,0,0,.18);
+}
+#cats .cat{
+padding:.65rem 1.2rem;
+border-radius:999px;
+border:1px solid #d8d8d8;
+background:#fff;
+cursor:pointer;
+transition:.25s;
+font-weight:600;
+}
+#cats .cat:hover{
+transform:translateY(-2px);
+border-color:var(--tan);
+}
+#cats .cat.active{
+background:var(--tan);
+border-color:var(--tan);
+color:#fff;
+}
+.cardx{
+background:#fff;
+border-radius:var(--radius);
+border:1px solid #e3e3e3;
+padding:1.5rem;
+height:100%;
+transition:.25s;
+box-shadow:0 5px 20px rgba(0,0,0,.04);
+}
+.cardx:hover{
+transform:translateY(-6px);
+box-shadow:0 18px 40px rgba(0,0,0,.12);
+border-color:var(--tan);
+}
+.logo{
+width:72px;
+height:72px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#ececec;
+font-size:1.5rem;
+font-weight:700;
+flex-shrink:0;
+}
+.badge-premier{
+display:inline-block;
+background:var(--tan);
+color:#fff;
+padding:.35rem .75rem;
+border-radius:999px;
+font-size:.75rem;
+margin:.4rem 0;
+}
+footer{
+background:#efede5;
+}
+@media (max-width:991px){
+.hero{
+text-align:center;
+}
+.hero-card{
+margin-top:2rem;
+}
+}
