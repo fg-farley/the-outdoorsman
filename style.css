@@ -1,0 +1,6 @@
+body{background:#f4f1e8}.hero{background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),linear-gradient(#88abc2,#d5c6a1);color:#fff}
+.cardx{background:#fff;border-radius:18px;border:1px solid #ddd;padding:20px;height:100%;transition:.25s}
+.cardx:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08);border-color:#9a783d}
+.cat{padding:.5rem 1rem;border-radius:999px;background:#fff;border:1px solid #ccc;cursor:pointer}
+.cat.active,.badge-premier{background:#9a783d;color:#fff}
+.logo{width:70px;height:70px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-weight:bold}
