@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Outdoorsman — Midwest Hunting & Fishing Guide</title>
+  <meta name="description" content="A responsive cinematic layered parallax hero for Woods & Water Hunting Magazine.">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --pointer-x: 0;
+      --pointer-y: 0;
+      --scroll-shift: 0px;
+      --orange: #e27a20;
+      --white: #f7f5ef;
+      --deep: #101710;
+    }
+
+    *{box-sizing:border-box}
+
+    html,
+    body{
+      margin:0;
+      min-height:100%;
+      background:#111912;
+      color:#fff;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{overflow-x:hidden}
+
+    a{text-decoration:none}
+      
+      .nav-brand{
+          max-width: 250px;
+      }
+      
+/* -------------------------------
+Dropdown
+-------------------------------- */
+
+.dropdown{
+    position:relative;
+}
+
+.dropdown>a{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.dropdown-arrow{
+    font-size:.65rem;
+    transition:.3s;
+}
+
+.dropdown:hover .dropdown-arrow{
+    transform:rotate(180deg);
+}
+
+.dropdown-menu{
+
+    position:absolute;
+    top:calc(100% + 15px);
+    left:50%;
+    transform:translateX(-50%) translateY(12px);
+
+    min-width:230px;
+
+    background:rgba(10,10,10,.94);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:14px;
+
+    padding:12px 0;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.35s ease;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.35);
+
+    z-index:9999;
+}
+
+.dropdown:hover .dropdown-menu{
+
+    opacity:1;
+    visibility:visible;
+
+    transform:translateX(-50%) translateY(0);
+
+}
+
+.dropdown-menu li{
+
+    list-style:none;
+
+}
+
+.dropdown-menu a{
+
+    display:block;
+
+    padding:12px 24px;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:.95rem;
+
+    transition:.25s;
+
+}
+
+.dropdown-menu a:hover{
+
+    background:rgba(255,255,255,.06);
+
+    padding-left:30px;
+
+}
+
+    .hero{
+      position:relative;
+      min-height:100svh;
+      isolation:isolate;
+      overflow:hidden;
+      background:#7d95b3;
+    }
+      
+      .mag-cover{
+              width: 200px;
+    margin-bottom: 2rem;
+      }
+
+    /* ---------- PARALLAX STAGE ---------- */
+
+    .scene{
+      position:absolute;
+      inset:-5%;
+      z-index:0;
+      overflow:hidden;
+      pointer-events:none;
+    }
+
+    .parallax-layer{
+      position:absolute;
+      inset:0;
+      transform:
+        translate3d(
+          calc(var(--pointer-x) * var(--x-depth, 0px)),
+          calc((var(--pointer-y) * var(--y-depth, 0px)) + (var(--scroll-shift) * var(--scroll-depth, 0))),
+          0
+        );
+      will-change:transform;
+    }
+
+    .parallax-layer > img{
+      position:absolute;
+      display:block;
+      max-width:none;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    /* Moving sky: larger than viewport so it can drift without exposing edges */
+    .sky-layer{
+      --x-depth: 5px;
+      --y-depth: 3px;
+      --scroll-depth: .02;
+      inset:-8%;
+      animation:skyPan 24s ease-in-out infinite alternate;
+    }
+
+    .sky-layer img{
+      inset:0;
+      width:112%;
+      height:112%;
+      object-fit:cover;
+      object-position:center 42%;
+      filter:saturate(1.03) contrast(1.02);
+    }
+
+    /* Distant mountains */
+    .mountain-layer{
+      --x-depth: 10px;
+      --y-depth: 6px;
+      --scroll-depth: .04;
+      top:17%;
+    }
+
+    .mountain-layer img{
+      left:-5%;
+      bottom:8%;
+      width:110%;
+      height:auto;
+      filter:saturate(.82) brightness(.82);
+    }
+
+    /* Forest and meadow */
+    .forest-layer{
+      --x-depth: 16px;
+      --y-depth: 10px;
+      --scroll-depth: .065;
+      top:29%;
+    }
+
+    .forest-layer img{
+      left:-5%;
+      bottom:33%;
+      width:110%;
+      height:auto;
+      filter:saturate(.75) brightness(.68) contrast(1.04);
+    }
+
+    /* Rolling hill layers */
+    .hill-middle{
+      --x-depth: 22px;
+      --y-depth: 14px;
+      --scroll-depth: .085;
+      top:48%;
+    }
+
+    .hill-middle img{
+      left:-6%;
+      bottom:-4%;
+      width:112%;
+      height:auto;
+      filter:saturate(.72) brightness(.60);
+    }
+
+    .hill-front{
+      --x-depth: 29px;
+      --y-depth: 18px;
+      --scroll-depth: .11;
+      top:59%;
+    }
+
+    .hill-front img{
+      left:-6%;
+      bottom:-7%;
+      width:112%;
+      height:auto;
+      filter:saturate(.68) brightness(.50);
+    }
+      
+.clouds-layer{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.clouds-layer img{
+  position:absolute;
+  display:block;
+  width:auto;
+  max-width:none;
+  height:auto;
+  opacity:.72;
+  filter:blur(.2px);
+  will-change:transform;
+}
+
+/* Slower, more distant cloud layer */
+.clouds-back{
+  z-index:1;
+}
+
+.clouds-back img{
+    top: 1%;
+    left: -40%;
+    width: 35vw;
+    min-width: 410px;
+    opacity: 1;
+    animation: cloudMoveBack 65s linear infinite;
+    background-blend-mode: multiply;
+}
+
+/* Closer cloud layer */
+.clouds-front{
+  z-index:2;
+}
+
+.clouds-front img{
+    top: 3%;
+    left: -55%;
+    width: 32vw;
+    min-width: 300px;
+    opacity: 1;
+    animation: cloudMoveFront 34s linear infinite;
+    background-blend-mode: multiply;
+}
+
+@keyframes cloudMoveBack{
+  from{
+    transform:translate3d(0,0,0);
+  }
+
+  to{
+    transform:translate3d(190vw,-2vh,0);
+  }
+}
+
+@keyframes cloudMoveFront{
+  from{
+    transform:translate3d(0,0,0);
+  }
+
+  to{
+    transform:translate3d(210vw,2vh,0);
+  }
+}
+      
+.clouds-back .cloud{
+  top:8%;
+  width:75vw;
+  min-width:700px;
+}
+
+.clouds-back .cloud-a{
+  left:-75vw;
+  animation:cloudLoop 50s linear infinite;
+}
+
+.clouds-back .cloud-b{
+  left:0;
+  animation:cloudLoop 50s linear infinite;
+}
+
+@keyframes cloudLoop{
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(150vw);
+  }
+}
+
+    /* Geese */
+/* Birds sit behind every mountain, forest and hill layer */
+.birds-layer{
+  --x-depth: 7px;
+  --y-depth: 4px;
+  --scroll-depth: .025;
+
+  z-index: 0;
+  inset: 0;
+  opacity: .65;
+}
+
+.birds-layer img{
+    position: absolute;
+    top: 0%;
+    /* width: clamp(210px, 28vw, 460px); */
+    height: auto;
+    max-width: none;
+    display: block;
+    width: 60vw;
+    height: auto;
+    filter: blur(1px);
+}
+
+    .bird{
+      position:absolute;
+      width:54px;
+      height:25px;
+      filter:drop-shadow(0 3px 4px rgba(0,0,0,.22));
+    }
+
+    .bird::before,
+    .bird::after{
+      content:"";
+      position:absolute;
+      top:10px;
+      width:30px;
+      height:5px;
+      border-radius:100%;
+      background:#31372e;
+    }
+
+    .bird::before{
+      right:50%;
+      transform:rotate(-22deg);
+      transform-origin:right center;
+    }
+
+    .bird::after{
+      left:50%;
+      transform:rotate(22deg);
+      transform-origin:left center;
+    }
+
+    .bird:nth-child(1){left:3%;top:31%;transform:scale(1)}
+    .bird:nth-child(2){left:8%;top:25%;transform:scale(.84)}
+    .bird:nth-child(3){left:14%;top:35%;transform:scale(.7)}
+    .bird:nth-child(4){left:19%;top:28%;transform:scale(.58)}
+    .bird:nth-child(5){left:25%;top:38%;transform:scale(.47)}
+
+    /* Hunter */
+    .hunter-layer{
+      --x-depth: 38px;
+      --y-depth: 24px;
+      --scroll-depth: .145;
+      z-index:7;
+    }
+
+.hunter-layer img{
+  right:8%;
+  bottom:-10%;
+  height:87%;
+  width:auto;
+
+  transform-origin:48% 78%;
+
+  animation:hunterAimFocus 8s ease-in-out infinite alternate;
+
+  will-change:transform, filter;
+}
+
+    /* Tallgrass: three separate foreground bands */
+    .grass-back{
+      --x-depth: 32px;
+      --y-depth: 19px;
+      --scroll-depth: .12;
+      z-index:6;
+    }
+
+    .grass-back img{
+      left:-4%;
+      bottom:-15%;
+      width:108%;
+      height:auto;
+      opacity:.56;
+      filter:brightness(.62) saturate(.58);
+      transform-origin:bottom center;
+      animation:grassBackSway 6.2s ease-in-out infinite alternate;
+    }
+
+    .grass-mid{
+      --x-depth: 48px;
+      --y-depth: 30px;
+      --scroll-depth: .18;
+      z-index:8;
+    }
+
+    .grass-mid img{
+    left: -15%;
+    bottom: -1%;
+    width: 80%;
+    height: auto;
+    /* opacity: .78; */
+    filter: brightness(.42) saturate(.60);
+    transform-origin: bottom center;
+    animation: grassMidSway 4.8s ease-in-out infinite alternate;
+    }
+
+    .grass-front{
+      --x-depth: 64px;
+      --y-depth: 40px;
+      --scroll-depth: .23;
+      z-index:10;
+    }
+
+    .grass-front img{
+    left: 55%;
+    bottom: 3%;
+    width: 54%;
+    height: auto;
+    filter: brightness(.42) saturate(.60);
+    transform-origin: bottom center;
+    animation: grassFrontSway 4s ease-in-out infinite alternate;
+    }
+
+    /* Cinematic grading */
+    .scene-grade{
+      position:absolute;
+      inset:0;
+      z-index:11;
+      pointer-events:none;
+      background:
+        linear-gradient(90deg,
+          rgba(5,9,6,.79) 0%,
+          rgba(5,9,6,.57) 27%,
+          rgba(5,9,6,.13) 57%,
+          rgba(5,9,6,.09) 73%,
+          rgba(5,9,6,.25) 100%
+        ),
+        linear-gradient(180deg,
+          rgba(8,12,8,.07) 0%,
+          rgba(8,12,8,.01) 46%,
+          rgba(4,8,5,.73) 100%
+        ),
+        radial-gradient(circle at 69% 34%,
+          rgba(239,149,65,.13),
+          transparent 31%
+        );
+    }
+
+    .sun-glow{
+      position:absolute;
+      z-index:12;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 58% 28%,
+          rgba(255,186,96,.18),
+          transparent 30%
+        );
+      mix-blend-mode:screen;
+    }
+
+    /* ---------- NAV ---------- */
+
+    .main-nav{
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:30;
+      padding:1.65rem 0;
+      background:linear-gradient(180deg,rgba(5,8,6,.42),transparent);
+    }
+
+    .brand-lockup{
+      color:#fff;
+      line-height:1;
+      text-transform:uppercase;
+    }
+
+    .brand-title{
+      display:block;
+      font-family:Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      font-size:clamp(1.65rem,2.4vw,2.55rem);
+      letter-spacing:.02em;
+      transform:scaleX(.92);
+      transform-origin:left center;
+    }
+
+    .brand-subtitle{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      margin-top:.38rem;
+      font-size:.68rem;
+      letter-spacing:.42em;
+      color:rgba(255,255,255,.82);
+    }
+
+    .brand-subtitle::before,
+    .brand-subtitle::after{
+      content:"";
+      height:2px;
+      width:12px;
+      background:var(--orange);
+    }
+
+    .main-nav .nav-link{
+      color:rgba(255,255,255,.88);
+      font-size:.72rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      margin-left:1.4rem;
+    }
+
+    .main-nav .nav-link:hover{color:#fff}
+
+    .navbar-toggler{
+      border:0;
+      padding:.2rem;
+      box-shadow:none!important;
+    }
+
+    .menu-lines{
+      width:31px;
+      height:22px;
+      display:grid;
+      align-content:space-between;
+    }
+
+    .menu-lines span{
+      height:2px;
+      background:#fff;
+      display:block;
+      border-radius:999px;
+    }
+
+    /* ---------- CONTENT ---------- */
+
+    .hero-content{
+      position:relative;
+      z-index:20;
+      min-height:100svh;
+      display:flex;
+      align-items:center;
+      padding-top:135px;
+      padding-bottom:85px;
+    }
+
+    .content-wrap{
+      max-width:650px;
+      margin-top:5vh;
+    }
+
+    .kicker{
+      margin-bottom:1rem;
+      color:#f09a43;
+      font-size:clamp(.86rem,1.45vw,1.12rem);
+      text-transform:uppercase;
+      letter-spacing:.34em;
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      font-size:clamp(4.9rem,9.8vw,10.7rem);
+      line-height:.79;
+      letter-spacing:.015em;
+      text-transform:uppercase;
+      color:#f6f4ef;
+      text-shadow:0 9px 28px rgba(0,0,0,.46);
+      transform:scaleX(.92);
+      transform-origin:left center;
+    }
+
+    .accent-line{
+      width:106px;
+      height:3px;
+      margin:1.65rem 0 1.55rem;
+      background:var(--orange);
+    }
+
+    .hero-copy{
+      max-width:420px;
+      margin:0;
+      font-size:clamp(1rem,1.6vw,1.35rem);
+      line-height:1.5;
+      color:rgba(255,255,255,.92);
+      text-shadow:0 3px 16px rgba(0,0,0,.48);
+    }
+
+    .hero-cta{
+      display:inline-flex;
+      align-items:center;
+      gap:1.15rem;
+      margin-top:2rem;
+      padding:1.05rem 1.45rem;
+      border:1px solid rgba(255,255,255,.75);
+      color:#fff;
+      background:rgba(0,0,0,.08);
+      backdrop-filter:blur(7px);
+      font-size:.73rem;
+      letter-spacing:.19em;
+      text-transform:uppercase;
+      font-weight:700;
+      transition:.25s ease;
+    }
+
+    .hero-cta span{
+      color:var(--orange);
+      font-size:1.45rem;
+      line-height:1;
+      transition:transform .25s ease;
+    }
+
+    .hero-cta:hover{
+      color:#fff;
+      background:rgba(255,255,255,.11);
+      border-color:#fff;
+    }
+
+    .hero-cta:hover span{transform:translateX(5px)}
+
+    .scroll-indicator{
+      position:absolute;
+      left:50%;
+      bottom:1.4rem;
+      z-index:25;
+      transform:translateX(-50%);
+      display:grid;
+      place-items:center;
+      gap:.45rem;
+      font-size:.64rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.84);
+    }
+
+    .scroll-chevron{
+      width:17px;
+      height:17px;
+      border-right:2px solid #fff;
+      border-bottom:2px solid #fff;
+      transform:rotate(45deg);
+      animation:scrollBounce 1.8s ease-in-out infinite;
+    }
+
+    /* ---------- ANIMATION ---------- */
+
+    @keyframes skyPan{
+      0%{
+        transform:translate3d(-1.3%,0,0) scale(1.03);
+      }
+      100%{
+        transform:translate3d(1.4%,-.8%,0) scale(1.07);
+      }
+    }
+
+    @keyframes birdFlight{
+      0%{transform:translate3d(-31vw,7vh,0);opacity:0}
+      8%{opacity:.88}
+      75%{opacity:.88}
+      100%{transform:translate3d(124vw,-17vh,0);opacity:0}
+    }
+
+    @keyframes grassBackSway{
+      from{transform:rotate(-.45deg) translateX(-.3%)}
+      to{transform:rotate(.9deg) translateX(.4%)}
+    }
+
+    @keyframes grassMidSway{
+      from{transform:rotate(-.8deg) translateX(-.45%)}
+      to{transform:rotate(1.35deg) translateX(.55%)}
+    }
+
+    @keyframes grassFrontSway{
+      from{transform:rotate(-1deg) translateX(-.55%)}
+      to{transform:rotate(1.7deg) translateX(.7%)}
+    }
+
+    @keyframes scrollBounce{
+      0%,100%{transform:rotate(45deg) translate(0,0);opacity:.45}
+      50%{transform:rotate(45deg) translate(5px,5px);opacity:1}
+    }
+      
+@keyframes hunterAim{
+  0%{
+    transform:
+      rotate(-2.5deg)
+      translate3d(0, 4px, 0);
+  }
+
+  45%{
+    transform:
+      rotate(-1deg)
+      translate3d(0, 1px, 0);
+  }
+
+  100%{
+    transform:
+      rotate(.75deg)
+      translate3d(0, -3px, 0);
+  }
+}
+      
+@keyframes hunterAimFocus{
+  0%{
+    transform:
+      rotate(-2deg)
+      translate3d(0, 3px, 0)
+      scale(1);
+
+    filter:
+      blur(0px)
+      drop-shadow(-18px 28px 30px rgba(0,0,0,.42))
+      saturate(.86)
+      brightness(.80)
+      contrast(1.03);
+  }
+
+  50%{
+    transform:
+      rotate(-.7deg)
+      translate3d(1px, 0, 0)
+      scale(1.002);
+
+    filter:
+      blur(.35px)
+      drop-shadow(-18px 28px 30px rgba(0,0,0,.42))
+      saturate(.84)
+      brightness(.79)
+      contrast(1.02);
+  }
+
+  100%{
+    transform:
+      rotate(.5deg)
+      translate3d(0, -2px, 0)
+      scale(1.004);
+
+    filter:
+      blur(.7px)
+      drop-shadow(-18px 28px 30px rgba(0,0,0,.42))
+      saturate(.82)
+      brightness(.78)
+      contrast(1.01);
+  }
+}
+
+    /* ---------- RESPONSIVE ---------- */
+
+    @media (max-width:1199.98px){
+      .hunter-layer img{
+        right:1%;
+        height:96%;
+      }
+
+      .content-wrap{max-width:590px}
+    }
+
+    @media (max-width:991.98px){
+      .navbar-collapse{
+        margin-top:1rem;
+        padding:1rem 1.1rem;
+        background:rgba(9,14,10,.94);
+        backdrop-filter:blur(12px);
+      }
+
+      .main-nav .nav-link{
+        margin-left:0;
+        padding:.75rem 0;
+      }
+
+      .hero-content{
+        align-items:flex-start;
+        padding-top:155px;
+      }
+
+      .content-wrap{margin-top:1vh}
+
+      .hunter-layer img{
+        right:-12%;
+        bottom:-6%;
+        height:78%;
+        opacity:.83;
+      }
+
+      .scene-grade{
+        background:
+          linear-gradient(90deg,
+            rgba(4,8,5,.84),
+            rgba(4,8,5,.56) 52%,
+            rgba(4,8,5,.19)
+          ),
+          linear-gradient(180deg,
+            transparent 38%,
+            rgba(4,8,5,.79)
+          );
+      }
+    }
+
+    @media (max-width:767.98px){
+      .hero,
+      .hero-content{
+        min-height:850px;
+      }
+
+      .main-nav{padding:1.1rem 0}
+
+      .brand-title{font-size:1.7rem}
+      .brand-subtitle{font-size:.5rem;letter-spacing:.31em}
+
+      .hero-content{padding-top:120px}
+      .content-wrap{
+          display: block;
+          margin: 0 auto;
+        }
+        
+        .mag-cover {
+            width: 200px;
+            margin-bottom: 2rem !important;
+            display: block;
+            margin: 0 auto;
+            margin-top 3rem;
+        }
+
+      .kicker{
+        font-size: .75rem;
+        letter-spacing: .25em;
+        text-align: center;
+      }
+
+      .hero-title{
+        font-size: clamp(4rem, 20vw, 6.35rem);
+        line-height: .84;
+        text-align: center;
+      }
+
+      .hero-copy{
+        max-width:330px;
+        font-size:1rem;
+      }
+
+      .hunter-layer img{
+        right:-37%;
+        bottom:-5%;
+        height:61%;
+        opacity:.65;
+      }
+        
+.accent-line {
+    width: 106px;
+    height: 3px;
+    margin: 1.65rem 0 1.55rem;
+    background: var(--orange);
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+        
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.15rem;
+    margin-top: 2rem;
+    padding: 1.05rem 1.45rem;
+    border: 1px solid rgba(255, 255, 255, .75);
+    color: #fff;
+    background: rgba(0, 0, 0, .08);
+    backdrop-filter: blur(7px);
+    font-size: .73rem;
+    letter-spacing: .19em;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: .25s ease;
+    margin: 0 auto;
+    margin-top: 2rem;
+    display: block;
+    text-align: center;
+}
+
+      .mountain-layer{top:-183%}
+      .mountain-layer img{width:150%;left:-25%}
+
+      .forest-layer{top:41%}
+      .forest-layer img{width:150%;left:-25%}
+
+      .hill-middle{top:57%}
+      .hill-middle img{width:148%;left:-24%}
+
+      .hill-front{top:67%}
+      .hill-front img{width:145%;left:-22%}
+
+      .grass-back img{
+        width:148%;
+        left:-24%;
+        bottom:-11%;
+      }
+
+      .grass-mid img{
+        width:80%;
+        left:-27%;
+        bottom:-7%;
+      }
+
+      .grass-front img{
+        width:160%;
+        left:-15%;
+        bottom:-1%;
+      }
+        
+        .birds-layer img{
+                position: absolute;
+    top: 0%;
+    /* width: clamp(210px, 28vw, 460px); */
+    height: auto;
+    /* max-width: 100%; */
+    display: block;
+    width: 130vw;
+    /* height: auto; */
+    filter: blur(1px);
+        }
+
+      .scroll-indicator{display:none}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *,
+      *::before,
+      *::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition:none!important;
+        scroll-behavior:auto!important;
+      }
+    }
+      
+/* =========================================================
+   MOBILE HERO FIX
+   Add this after all existing styles
+========================================================= */
+
+@media (max-width: 767.98px){
+
+  html,
+  body{
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
+  }
+
+  .hero{
+    width:100%;
+    height:100svh;
+    min-height:680px;
+    max-height:none;
+    overflow:hidden;
+  }
+
+  .hero-content{
+    width:100%;
+    height:100svh;
+    min-height:680px;
+    padding-top:115px;
+    padding-bottom:35px;
+    align-items:flex-start;
+  }
+
+  /*
+   * Remove the oversized negative scene inset on mobile.
+   * The desktop -5% inset can create visual overflow below the hero.
+   */
+  .scene{
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+
+  /* Keep the background sky covering the complete hero */
+  .sky-layer{
+    inset:-8%;
+  }
+
+  .sky-layer img{
+    width:116%;
+    height:116%;
+    inset:-8%;
+    object-fit:cover;
+    object-position:center center;
+  }
+
+  /* Bring the hunter into the visible portion of the screen */
+  .hunter-layer{
+    inset:0;
+    z-index:7;
+  }
+
+  .hunter-layer img{
+        right: -47%;
+        bottom: -1%;
+        width: auto;
+        height: 78%;
+        max-width: none;
+        opacity: .88;
+        object-fit: contain;
+        object-position: right bottom;
+  }
+
+  /* Keep the closest hills anchored to the bottom */
+  .hill-middle{
+    top:auto;
+    bottom:140px;
+    height:54%;
+  }
+
+  .hill-middle img{
+    left:-25%;
+    bottom:0;
+    width:150%;
+    height:auto;
+  }
+
+  .hill-front{
+    top:auto;
+    bottom:0;
+    height:43%;
+  }
+
+  .hill-front img{
+    left:-23%;
+    bottom:-2%;
+    width:146%;
+    height:auto;
+  }
+
+  /* Keep grass attached to the bottom instead of falling below the hero */
+  .grass-back,
+  .grass-mid,
+  .grass-front{
+        top: auto;
+        bottom: 10px;
+        height: 30%;
+  }
+
+  .grass-back img{
+    left:-24%;
+    bottom:-4%;
+    width:148%;
+  }
+
+  .grass-mid img{
+    left:-27%;
+    bottom:-5%;
+    width:154%;
+  }
+
+  .grass-front img{
+    left:-30%;
+    bottom:-9%;
+    width:160%;
+  }
+
+  .content-wrap{
+    width:100%;
+    max-width:88%;
+    margin-top:1rem;
+  }
+
+  .scroll-indicator{
+    display:none;
+  }
+}
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg main-nav">
+    <div class="container-fluid px-4 px-lg-5">
+      <a class="brand-lockup" href="#">
+          <img class="nav-brand" src="assets/The-Outdoorsman-Logo.webp"/>
+      </a>
+
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="menu-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="mainNavigation">
+        <ul class="navbar-nav align-items-lg-center">
+<li class="nav-item dropdown">
+  <a
+    class="nav-link dropdown-toggle"
+    href="#"
+    id="magazineDropdown"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Magazine
+  </a>
+
+  <ul
+    class="dropdown-menu"
+    aria-labelledby="magazineDropdown"
+  >
+    <li>
+      <a class="dropdown-item" href="#">Read</a>
+    </li>
+
+    <li>
+      <a class="dropdown-item" href="#">Subscribe</a>
+    </li>
+
+    <li>
+      <a class="dropdown-item" href="#">Advertise</a>
+    </li>
+  </ul>
+</li>
+          <li class="nav-item"><a class="nav-link" href="#">Guides</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Maps</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Calendar</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="hero">
+    <div class="scene" aria-hidden="true">
+
+    <div class="parallax-layer sky-layer">
+      <img src="assets/sky-2.webp" alt="">
+    </div>
+
+<div class="clouds-layer clouds-back">
+  <img src="assets/cloud-1.svg" alt="">
+</div>
+
+<div class="clouds-layer clouds-front">
+  <img src="assets/cloud-2.svg" alt="">
+</div>
+
+
+
+    <div class="parallax-layer mountain-layer">
+      <img src="assets/hill6.webp" alt="">
+    </div>
+        
+    <!-- Birds must come directly after the sky -->
+    <div class="parallax-layer birds-layer">
+      <img
+        src="assets/Bird%20Flock%20(Test).svg"
+        alt=""
+        aria-hidden="true"
+      >
+    </div>
+
+    <div class="parallax-layer forest-layer">
+      <img src="assets/trees1.webp" alt="">
+    </div>
+
+    <div class="parallax-layer hill-middle">
+      <img src="assets/hill5.webp" alt="">
+    </div>
+
+    <div class="parallax-layer hill-front">
+      <img src="assets/hill4.webp" alt="">
+    </div>
+
+        
+      <div class="parallax-layer grass-back">
+        <img src="assets/tallgrass-1.webp" alt="">
+      </div>
+    
+
+      <div class="parallax-layer hunter-layer">
+        <img src="assets/hunter9.webp" alt="">
+      </div>
+
+      <div class="parallax-layer grass-mid">
+        <img src="assets/reeds1.webp" alt="">
+      </div>
+
+      <div class="parallax-layer grass-front">
+        <img src="assets/reeds2.webp" alt="">
+      </div>
+    </div>
+
+    <div class="scene-grade"></div>
+    <div class="sun-glow"></div>
+
+    <div class="container-fluid px-4 px-lg-5 hero-content">
+      <div class="content-wrap">
+        <img class="mag-cover" src="assets/The-Outdoorsman-Mag.webp"/>
+        <div class="kicker">The Stories Behind</div>
+        <h1 class="hero-title">The Chase</h1>
+        <div class="accent-line"></div>
+        <a href="#" class="hero-cta">
+          Explore the Latest
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const hero = document.getElementById('hero');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion) return;
+
+      let targetX = 0;
+      let targetY = 0;
+      let currentX = 0;
+      let currentY = 0;
+
+      hero.addEventListener('pointermove', (event) => {
+        const rect = hero.getBoundingClientRect();
+
+        targetX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+        targetY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+      });
+
+      hero.addEventListener('pointerleave', () => {
+        targetX = 0;
+        targetY = 0;
+      });
+
+      function animatePointer(){
+        currentX += (targetX - currentX) * 0.07;
+        currentY += (targetY - currentY) * 0.07;
+
+        root.style.setProperty('--pointer-x', currentX.toFixed(4));
+        root.style.setProperty('--pointer-y', currentY.toFixed(4));
+
+        requestAnimationFrame(animatePointer);
+      }
+
+      function updateScroll(){
+        const rect = hero.getBoundingClientRect();
+        const progress = Math.max(
+          -1,
+          Math.min(1, -rect.top / Math.max(hero.offsetHeight, 1))
+        );
+
+        root.style.setProperty('--scroll-shift', `${progress * 90}px`);
+      }
+
+      window.addEventListener('scroll', updateScroll, { passive:true });
+
+      updateScroll();
+      animatePointer();
+    })();
+  </script>
+</body>
+</html>
